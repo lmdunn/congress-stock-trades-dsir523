@@ -1,0 +1,1 @@
+house data was downloaded from https://housestockwatcher.com/api on 7/15/22 at 5PM.
