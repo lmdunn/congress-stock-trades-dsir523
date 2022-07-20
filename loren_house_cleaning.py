@@ -1,4 +1,7 @@
 import pandas as pd
+from datetime import datetime
+import re
+
 house = pd.read_csv("./loren_data/house_2022-07-15.csv")
 
 #dropping 'owner' because there are too many nulls and '--'
@@ -44,9 +47,9 @@ tickers = tickers[['Symbol', 'Name']]
 tickers.columns = tickers.columns.map(lambda x: x.lower())
 
 #finding and filling in the missing ticker symbols
-for i in house.loc[house.ticker == '--']['asset_description']:
-    symbol = tickers.loc[tickers.name == i, 'symbol']
-    house.loc[house.asset_description == i, 'ticker'] = symbol
+for i in house.loc[house['ticker'] == '--']['asset_description']:
+    symbol = tickers.loc[tickers['name'] == i, 'symbol']
+    house.loc[house['asset_description'] == i, 'ticker'] = symbol
     
 #editing columns/column names in preparation for concatenation with the Senate data
 house['chamber'] = 'house'
