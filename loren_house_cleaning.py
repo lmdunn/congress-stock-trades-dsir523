@@ -1,6 +1,5 @@
 import pandas as pd
 from datetime import datetime
-import re
 
 house = pd.read_csv("./loren_data/house_2022-07-15.csv")
 
@@ -55,6 +54,68 @@ for i in house.loc[house['ticker'] == '--']['asset_description']:
 house['chamber'] = 'house'
 house.drop(columns = ['ptr_link', 'cap_gains_over_200_usd', 'disclosure_year'], inplace = True)
 house.rename(columns = {'representative': 'name', 'district': 'represents'}, inplace = True)
+
+#importing current legislators dataframe
+current_legislators = pd.read_csv('./loren_data/legislators-current.csv')
+
+#importing historical legislators dataframe
+historical_legislators = pd.read_csv('./loren_data/legislators-historical.csv')
+
+#building the dataframe to pull party, gender, and birthday from
+historical_legislators['birthday'] = pd.to_datetime(historical_legislators['birthday'], format = '%Y-%m-%d')
+current_legislators['birthday'] = pd.to_datetime(current_legislators['birthday'], format = '%Y-%m-%d')
+historical_legislators = historical_legislators[historical_legislators['birthday'] > datetime(1922,1, 1)]
+
+relevant_legislators = pd.concat([current_legislators, historical_legislators])
+relevant_legislators = relevant_legislators[['last_name', 'first_name', 'middle_name', 'suffix',
+                                             'full_name', 'birthday', 'gender', 'type', 'state', 'party',
+                                             'district']]
+
+#creating first and last name columns to be able to cross search the dataframes
+house['name'] = house['name'].map(lambda x: x.replace("Hon. ", ""))
+house['first_name'] = house['name'].map(lambda x: x.split()[0])
+house['last_name'] = house['name'].map(lambda x: x.split()[-1])
+
+#cleaning both dataframes
+house.loc[house['last_name'] == 'FACS', 'last_name'] = 'Dunn'
+house.loc[house['last_name'] == 'Arenholz', 'last_name'] = 'Hinson'
+
+relevant_legislators.loc[relevant_legislators['last_name'].str.contains('Halleran'), 'last_name'] = "O'Halleran"
+relevant_legislators.loc[relevant_legislators['last_name'] == 'Sánchez', 'last_name'] = 'Sanchez'
+
+#importing necessary data from relevant_legislators to house
+#if this throws an error remove returns from after &s
+house['party'] = ''
+house['birthday'] = ''
+house['gender'] = ''
+
+name = set()
+for i in house.index:
+    #try:
+    first_name = house.loc[i, 'first_name']
+    last_name = house.loc[i, 'last_name']
+    party = relevant_legislators[(relevant_legislators['first_name'] == first_name) &
+                                 (relevant_legislators['last_name'].map(lambda x: x.split()[-1]) == last_name)]['party'].values
+    birthday = relevant_legislators[(relevant_legislators['first_name'] == first_name) & 
+                                    (relevant_legislators['last_name'].map(lambda x: x.split()[-1]) == last_name)]['birthday'].values
+    gender = relevant_legislators[(relevant_legislators['first_name'] == first_name) & 
+                                  (relevant_legislators['last_name'].map(lambda x: x.split()[-1]) == last_name)]['gender'].values
+    if len(party) == 0:
+        party = relevant_legislators[(relevant_legislators['district'] == float(house.loc[i, 'represents'][-2:])) & 
+                                     (relevant_legislators['last_name'].map(lambda x: x.split()[-1]) == last_name)]['party'].values
+        birthday = relevant_legislators[(relevant_legislators['district'] == float(house.loc[i, 'represents'][-2:])) & 
+                                        (relevant_legislators['last_name'].map(lambda x: x.split()[-1]) == last_name)]['birthday'].values
+        gender = relevant_legislators[(relevant_legislators['district'] == float(house.loc[i, 'represents'][-2:])) & 
+                                      (relevant_legislators['last_name'].map(lambda x: x.split()[-1]) == last_name)]['gender'].values
+    if len(party) == 0:
+        name.add(str(first_name) + ' ' + str(last_name))
+    house.loc[i, 'party'] = party[0]
+    house.loc[i, 'birthday'] = birthday[0]
+    house.loc[i, 'gender'] = gender[0]
+    
+#putting birthdays into datetime and removing the first_name and last_name columns
+house['birthday'] = pd.to_datetime(house['birthday'], format = '%Y-%m-%d')
+house.drop(columns = ['first_name', 'last_name'], inplace = True)
 
 #reading out the cleaned dataframe to .csv
 house.to_csv('./loren_data/clean_house_2022-07-15.csv')
