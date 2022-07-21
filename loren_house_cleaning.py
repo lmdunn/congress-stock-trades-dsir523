@@ -1,3 +1,6 @@
+# THIS NEEDS TO BE UPDATED AFTER CLEANING FINISHED, 7/20/22, 10:30 PM
+
+
 import pandas as pd
 from datetime import datetime
 
