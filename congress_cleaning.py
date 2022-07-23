@@ -115,7 +115,6 @@ legislators = legislators[['last_name', 'first_name', 'middle_name', 'suffix',
                                              'full_name', 'birthday', 'gender', 'type', 'state', 'party', 'district']]
 
 #cleaning in prep for inputing additional data
-print(house.columns)
 house['name'] = house['name'].map(lambda x: x.replace("Hon. ", ""))
 house['first_name'] = house['name'].map(lambda x: x.split()[0])
 house['last_name'] = house['name'].map(lambda x: x.split()[-1])
@@ -205,9 +204,7 @@ senate['possible_ticker'] = ''
 
 for i in senate[senate['ticker'] == '--']['asset_description'].index:
     asset_descr = senate.loc[i, 'asset_description']
-    #print(asset_descr)
     ticker = re.findall('[A-Z]{2,6}', asset_descr)
-    #print(ticker)
     if len(ticker) == 1 and ticker != 'LLC' and ticker != 'ETF':
         senate.loc[i, 'possible_ticker'] = ticker[0]
 
