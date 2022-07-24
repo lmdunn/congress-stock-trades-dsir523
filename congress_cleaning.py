@@ -149,7 +149,6 @@ for i in house.index:
 
 #birthdays to datetime and dropping unnecessary columns
 house['birthday'] = pd.to_datetime(house['birthday'], format = '%Y-%m-%d')
-house.drop(columns = ['first_name', 'last_name'], inplace = True)
 
 ###
 #senate data cleaning starts here.
@@ -290,6 +289,6 @@ all_reps['birthday'] = pd.to_datetime(all_reps['birthday'], format = '%Y-%m-%d')
 all_reps.reset_index(drop = True, inplace = True)
 
 #outputting final data set, ticker data, and relevant reps data.
-all_reps.to_csv('./data/cleaned_complete_congress_ data.csv', index = False)
+all_reps.to_csv('./data/cleaned_complete_congress_data.csv', index = False)
 tickers.to_csv('data/ticker_symbols.csv', index = False)
 legislators.to_csv('data/relevant_legislators.csv')
