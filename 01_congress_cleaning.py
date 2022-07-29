@@ -291,4 +291,4 @@ all_reps.reset_index(drop = True, inplace = True)
 #outputting final data set, ticker data, and relevant reps data.
 all_reps.to_csv('./data/cleaned_complete_congress_data.csv', index = False)
 tickers.to_csv('data/ticker_symbols.csv', index = False)
-legislators.to_csv('data/relevant_legislators.csv')
+legislators.to_csv('data/relevant_legislators.csv', index = False)
