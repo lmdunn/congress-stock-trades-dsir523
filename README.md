@@ -101,19 +101,19 @@ The first thing we will look at is 3 box plots. We compared each to the values o
 
 Party:
 
-![Alt_text](./images/party_box.jpg)
+![Alt_text](./images/party_box_plot.jpg)
 
 This shows that the Republicans tend to make more in stock trades than the Democrats.
 
 Gender:
 
-![Alt_text](./images/gender_box.jpg)
+![Alt_text](./images/gender_box_plot.jpg)
 
 Males in Congress seem to make more than females.
 
 Chamber:
 
-![Alt_text](./images/chamber_box.jpg)
+![Alt_text](./images/chamber_box_plot.jpg)
 
 Senators seem to make more than the House members.
 
