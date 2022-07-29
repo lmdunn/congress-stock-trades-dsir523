@@ -81,3 +81,24 @@ This data set tracks the cumulative profit and loss of the entire congressional 
 |percent_change|float|The cumulative percent change in value of all trading **from the first day each position was taken**.|
 
 ## Brief Summary of the Analysis
+-----
+### Summary of Cleaning
+The most important decisions we made during cleaning, both in initial cleaning and feature engineering:
+1. We chose to use the high end of the range of value of the transactions (which we ultimately labeled `'amount'` of transaction). In the face of an otherwise arbitrary decision, we thought it would be rational for legislators to try to come in just under a limit, rather than just over.
+2. We use adjusted stock prices, which happened to be closing prices, for our stock prices, in order to take splits and other idiosyncracies into account.
+3. We opted to drop partial sales because we didn't have time to develop the more complex code necessary to account for those. 
+4. We dropped any transaction that wasn't a stock transaction or didn't have a ticker we could identify in the Alpha Vantage records.
+### Summary of Feature Engineering
+After initial cleaning, we joined our data set of legislator transactions with data we pulled from Alpha Vantage API, filling in pricing data that also enabled us to estimate the size of stock positions. From there, we were able to calculate profit and loss on a daily basis over the period of the analysis. We then built an additional dataframe tracking the basis for each position (the initial value of that position). Using data from both dataframes, we built a datetime indexed dataframe with cumulative basis, profit/loss, and percent change.
+
+We did this in two parallel processes, producing one dataframe that's optimal for looking at changes in the size of congressional holdings over time and another that's optimal for looking at cumulative profit/loss over time, for comparison to market indices and other benchmarks, as described above under "The Data".
+
+Additional cleaning happened during this stage, as well.
+### Summary of EDA
+PLEASE FILL THIS IN MATT
+### Summary of Modeling
+PLEASE FILL THIS IN KYLE.
+
+## Conclusions and Recommendations
+-----
+KYLE I THINK YOU MIGHT BE BEST POSITIONED TO FILL THIS IN.
