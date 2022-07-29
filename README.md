@@ -95,10 +95,46 @@ We did this in two parallel processes, producing one dataframe that's optimal fo
 
 Additional cleaning happened during this stage, as well.
 ### Summary of EDA
-PLEASE FILL THIS IN MATT
+Here are some of the findings we had after cleaning and analyzing the data. What we did was create a values column that gave us the total value of a Congress person's portofio at the end of adding up all their trades values. We used this to analyziz the data.
+
+The first thing we will look at is 3 box plots. We compared each to the values of the Congress people. We have one that compares their party, one for gender, and one for chamber (House or Senate). Here is our findings.
+
+Party:
+
+![Alt_text](./images/party_box.jpg)
+
+This shows that the Republicans tend to make more in stock trades than the Democrats.
+
+Gender:
+
+![Alt_text](./images/gender_box.jpg)
+
+Males in Congress seem to make more than females.
+
+Chamber:
+
+![Alt_text](./images/chamber_box.jpg)
+
+Senators seem to make more than the House members.
+
+Next we will show a scatterplot that compares a Congress persons age with the value of their portfolio.
+
+![Alt_text](./images/age_scatterplot.jpg)
+
+It seems like there is no correlation here. But we can confirm that with a heatmap:
+
+![Alt_text](./images/heat_map.jpg)
+
+It seems like the best predictor of the returns rate is whether or not the trader was male. Males make more than females in the Congress. However, it isn't too strongly correlated.
+
+Some other finding we found. Only 2 Congressmen (Michael T. McCaul and Greg Gianforte) made over 1 million dollars in their stock portfolio. Just 27.72% of Congress people made a profit in their stock portfolio. We found that 3/18/2020 was the most traded day. This was right around the time the COVID 19 pandemic started in the USA.
+
 ### Summary of Modeling
-PLEASE FILL THIS IN KYLE.
+-----
+A few ARIMA models were fitted on once-differenced data of the average cumulative return of congress. Best model had a mean squared error of 1,092,081,789,303,923.6. It does not forecast congress returns well at all, really. Perhaps more data collection, grid searching for better hyperparameters, or changing to a SARIMAX model to account for seasonality could provide better forecasting.
 
 ## Conclusions and Recommendations
 -----
-KYLE I THINK YOU MIGHT BE BEST POSITIONED TO FILL THIS IN.
+Ultimately, because of the level of involvement required to clean and prep our data, we needed more time to review our analysis before being able to present our conclusions with a high degree of confidence.
+
+Given that, it appears that while it's possible that there are instances of legislators who used inside information to outperform other investors/the market as a whole, as a group, the legislators would have been better off investing in an S&P 500 index fund over this period of time rather than trading in specific stocks.
